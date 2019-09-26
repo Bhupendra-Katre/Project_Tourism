@@ -1,0 +1,35 @@
+package online_tour;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+public class SignUpDao {
+	public static Connection getConnection(){  
+        Connection con=null;  
+        try{  
+            Class.forName("com.mysql.jdbc.Driver");  
+            con=DriverManager.getConnection("jdbc:Mysql://localhost:3306/client_data","root","password@123");  
+        }catch(Exception e){System.out.println(e);}  
+        return con;  
+    }  
+    public static int save(SignUp e){  
+        int status=0;  
+        try{  
+            Connection con=SignUpDao.getConnection();  
+            PreparedStatement ps=con.prepareStatement(  
+                         "insert into sign_in_information values (default,?,?,?,?,?)");  
+            ps.setString(1,e.getFullName());  
+            ps.setString(2,e.getEmail());  
+            ps.setString(3,e.getUserName());  
+            ps.setString(4,e.getPassword()); 
+            ps.setString(5,e.getConfirmPassword());
+              
+            status=ps.executeUpdate();  
+              
+            con.close();  
+        }catch(Exception ex){ex.printStackTrace();}  
+          
+        return status;  
+    }  
+}
